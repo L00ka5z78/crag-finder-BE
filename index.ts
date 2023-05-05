@@ -2,6 +2,7 @@ import express, { json } from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 import config from './config/config';
+import { ValidationError, handleError } from './utils/errors';
 
 const app = express();
 
@@ -11,6 +12,14 @@ app.use(
   })
 );
 app.use(json());
+
+//routers
+
+app.get('/', async (req, res) => {
+  throw new ValidationError('oh no');
+});
+
+app.use(handleError);
 
 app.listen(3001, '0.0.0.0', () => {
   console.log(
