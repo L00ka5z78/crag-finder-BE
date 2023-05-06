@@ -1,14 +1,11 @@
-import { CragEntity } from '../types';
+import { FieldPacket } from 'mysql2';
+import { CragEntity, NewCragEntity } from '../types';
+import { pool } from '../utils/connectDb';
 import { ValidationError } from '../utils/errors';
 
-export interface NewCragEntity extends Omit<CragEntity, 'id'> {
-  id?: string;
-}
+type CragRecordResults = [CragEntity[], FieldPacket[]];
 
 export class CragRecord implements CragEntity {
-  static getOneCragById(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
   public id: string;
   public name: string;
   public description: string;
@@ -16,7 +13,7 @@ export class CragRecord implements CragEntity {
   public lat: number;
   public lon: number;
 
-  constructor(obj: CragEntity) {
+  constructor(obj: NewCragEntity) {
     if (!obj.name || obj.name.length > 100) {
       throw new ValidationError(
         "Crags name can't be empty or longer than 100 characters"
@@ -36,10 +33,21 @@ export class CragRecord implements CragEntity {
     if (typeof obj.lat !== 'number' || typeof obj.lon !== 'number') {
       throw new ValidationError('Invalid coordinates');
     }
+    this.id = obj.id;
     this.name = obj.name;
     this.description = obj.description;
     this.url = obj.url;
     this.lat = obj.lat;
     this.lon = obj.lon;
+  }
+
+  static async getOneCragById(id: string): Promise<CragRecord | null> {
+    const [results] = (await pool.execute(
+      'SELECT * FROM `crags` WHERE id = :id',
+      {
+        id,
+      }
+    )) as CragRecordResults;
+    return results.length === 0 ? null : new CragRecord(results[0]);
   }
 }
