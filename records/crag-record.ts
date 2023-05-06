@@ -1,4 +1,5 @@
 import { CragEntity } from '../types';
+import { ValidationError } from '../utils/errors';
 
 interface NewCragEntity extends Omit<CragEntity, 'id'> {
   id?: string;
@@ -12,5 +13,25 @@ export class CragRecord implements CragEntity {
   public lat: number;
   public lon: number;
 
-  constructor(obj: CragEntity) {}
+  constructor(obj: CragEntity) {
+    if (!obj.name || obj.name.length > 100) {
+      throw new ValidationError(
+        "Crags name can't be empty or longer than 100 characters"
+      );
+    }
+    if (obj.description.length < 1000) {
+      throw new ValidationError(
+        "Crags description can'tlonger than 1000 characters"
+      );
+    }
+    //@ todo check if url is valid
+    if (!obj.url || obj.url.length < 100) {
+      throw new ValidationError(
+        "URL address can't be empty or longer than 100 characters"
+      );
+    }
+    if (typeof obj.lat !== 'number' || typeof obj.lon !== 'number') {
+      throw new ValidationError('Invalid coordinates');
+    }
+  }
 }
