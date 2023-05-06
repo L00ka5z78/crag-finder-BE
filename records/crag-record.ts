@@ -21,7 +21,7 @@ export class CragRecord implements CragEntity {
     }
     if (obj.description.length > 1000) {
       throw new ValidationError(
-        "Crags description can'tlonger than 1000 characters"
+        "Crags description can't be longer than 1000 characters"
       );
     }
     //@ todo check if url is valid
