@@ -19,13 +19,13 @@ export class CragRecord implements CragEntity {
         "Crags name can't be empty or longer than 100 characters"
       );
     }
-    if (obj.description.length < 1000) {
+    if (obj.description.length > 1000) {
       throw new ValidationError(
         "Crags description can'tlonger than 1000 characters"
       );
     }
     //@ todo check if url is valid
-    if (!obj.url || obj.url.length < 100) {
+    if (!obj.url || obj.url.length > 100) {
       throw new ValidationError(
         "URL address can't be empty or longer than 100 characters"
       );
@@ -33,5 +33,10 @@ export class CragRecord implements CragEntity {
     if (typeof obj.lat !== 'number' || typeof obj.lon !== 'number') {
       throw new ValidationError('Invalid coordinates');
     }
+    this.name = obj.name;
+    this.description = obj.description;
+    this.url = obj.url;
+    this.lat = obj.lat;
+    this.lon = obj.lon;
   }
 }
