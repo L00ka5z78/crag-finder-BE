@@ -1,7 +1,7 @@
 import { CragEntity } from '../types';
 import { ValidationError } from '../utils/errors';
 
-interface NewCragEntity extends Omit<CragEntity, 'id'> {
+export interface NewCragEntity extends Omit<CragEntity, 'id'> {
   id?: string;
 }
 
