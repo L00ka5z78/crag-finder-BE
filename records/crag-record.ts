@@ -6,6 +6,9 @@ export interface NewCragEntity extends Omit<CragEntity, 'id'> {
 }
 
 export class CragRecord implements CragEntity {
+  static getOneCragById(arg0: string) {
+    throw new Error('Method not implemented.');
+  }
   public id: string;
   public name: string;
   public description: string;

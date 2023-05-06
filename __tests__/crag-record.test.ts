@@ -8,7 +8,7 @@ const defaultObject = {
   lon: 9,
 };
 
-test('If builds CragRecord', () => {
+test('If it builds CragRecord', () => {
   const crag = new CragRecord(defaultObject);
 
   expect(crag.name).toBe('Test name');
@@ -25,13 +25,13 @@ test('Checks if name is valid', () => {
   ).toThrow("Crags name can't be empty or longer than 100 characters");
 });
 
-test('Validates invalid description', () => {
+test('If it validates invalid description', () => {
   expect(
     () => new CragRecord({ ...defaultObject, description: 'x'.repeat(1001) })
   ).toThrow("Crags description can't be longer than 1000 characters");
 });
 
-test('Validates invalid url', () => {
+test('If it validates invalid url', () => {
   expect(
     () =>
       new CragRecord({
@@ -45,7 +45,7 @@ test('Validates invalid url', () => {
   ).toThrow("URL address can't be empty or longer than 100 characters");
 });
 
-test('Validates invalid lat/lon', () => {
+test('If it validates invalid lat/lon', () => {
   expect(
     () => new CragRecord({ ...defaultObject, lat: 'x' as never, lon: 9 })
   ).toThrow('Invalid coordinates');
