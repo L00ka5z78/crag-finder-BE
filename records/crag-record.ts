@@ -1,5 +1,5 @@
 import { FieldPacket } from 'mysql2';
-import { CragEntity, NewCragEntity } from '../types';
+import { CragEntity, NewCragEntity, SimpleCragEntity } from '../types';
 import { pool } from '../utils/connectDb';
 import { ValidationError } from '../utils/errors';
 
@@ -49,5 +49,28 @@ export class CragRecord implements CragEntity {
       }
     )) as CragRecordResults;
     return results.length === 0 ? null : new CragRecord(results[0]);
+  }
+
+  static async listAllCrags(name: string): Promise<SimpleCragEntity[]> {
+    const [results] = (await pool.execute(
+      'SELECT * FROM `crags` WHERE `name` LIKE ?;',
+      [`%${name}%`]
+    )) as CragRecordResults;
+
+    return results.map((result) => {
+      const { id, lat, lon } = result;
+      return { id, lat, lon };
+    });
+  }
+
+  async createNewCrag(): Promise<void> {
+    try {
+      await pool.execute(
+        'INSERT INTO `crags`(`id`, `name`, `description`, `url`, `lat`, `lon`) VALUES (:id, :name, :description, :url, :lat, :lon);',
+        this
+      );
+    } catch (e) {
+      throw new ValidationError('This id is in our database!');
+    }
   }
 }

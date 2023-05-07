@@ -18,7 +18,7 @@ describe('Adding CragRecord.GetOne()', () => {
 
     console.log(crag);
 
-    // different test piece. WORKS WELL
+    // test piece. WORKS WELL
 
     // expect(crag).toBeDefined();
     // if (crag) {
@@ -39,5 +39,43 @@ describe('Adding CragRecord.GetOne()', () => {
     const crag = await CragRecord.getOneCragById('---');
 
     expect(crag).toBeNull();
+  });
+});
+
+describe('Adding CragRecord.listAllCrags', () => {
+  test('If CragRecord returns data from database for all entry when searching for "a"', async () => {
+    const crag = await CragRecord.listAllCrags('te');
+    expect(crag).not.toEqual([]);
+  });
+
+  test('If CragRecord returns an empty array when searching something doesnt exist', async () => {
+    const crag = await CragRecord.listAllCrags('cbf');
+    expect(crag).toEqual([]);
+  });
+
+  test('If CragRecord returns smaller amount of data', async () => {
+    const crag = await CragRecord.listAllCrags('te');
+    expect(crag[0].id).toBeDefined();
+    expect(crag[0].lat).toBeDefined();
+    expect(crag[0].lon).toBeDefined();
+  });
+});
+
+describe('If CragRecord.createNewCrag create new crag', () => {
+  test('If  CragRecord.createNewCrag returns new UUID', async () => {
+    const add = new CragRecord(defaultObject);
+    expect(add.id).toBeDefined();
+    expect(typeof add.id).toBe('string');
+  });
+
+  test('If CragRecord.createNewCrag add data to database', async () => {
+    const crag = new CragRecord(defaultObject);
+    await crag.createNewCrag();
+
+    const foundCrag = await CragRecord.getOneCragById(crag.id);
+
+    expect(foundCrag).toBeDefined();
+    expect(foundCrag).not.toBeNull();
+    expect(foundCrag!.id).toBe(crag.id);
   });
 });
