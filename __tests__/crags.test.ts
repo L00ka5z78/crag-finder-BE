@@ -1,4 +1,5 @@
 import { CragRecord } from '../records/crag-record';
+import { pool } from '../utils/connectDb';
 
 let ad: CragRecord;
 
@@ -9,6 +10,10 @@ const defaultObject = {
   lat: 9,
   lon: 9,
 };
+
+afterAll(async () => {
+  await pool.end();
+});
 
 describe('Adding CragRecord.GetOne()', () => {
   test('If CragRecord returns data from database for single entry', async () => {
@@ -43,13 +48,20 @@ describe('Adding CragRecord.GetOne()', () => {
 });
 
 describe('Adding CragRecord.listAllCrags', () => {
-  test('If CragRecord returns data from database for all entry when searching for "a"', async () => {
-    const crag = await CragRecord.listAllCrags('te');
+  test('If CragRecord returns an array of found entries', async () => {
+    const crag = await CragRecord.listAllCrags('');
     expect(crag).not.toEqual([]);
+    expect(crag[0].id).toBeDefined();
+  });
+
+  test('If CragRecord returns data from database for all entry when searching for "a"', async () => {
+    const crag = await CragRecord.listAllCrags('a');
+    expect(crag).not.toEqual([]);
+    expect(crag[0].id).toBeDefined();
   });
 
   test('If CragRecord returns an empty array when searching something doesnt exist', async () => {
-    const crag = await CragRecord.listAllCrags('cbf');
+    const crag = await CragRecord.listAllCrags('-------------------------');
     expect(crag).toEqual([]);
   });
 
