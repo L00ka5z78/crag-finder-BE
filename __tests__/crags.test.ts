@@ -2,7 +2,7 @@ import { CragRecord } from '../records/crag-record';
 import { CragEntity } from '../types';
 import { pool } from '../utils/connectDb';
 
-let ad: CragRecord;
+let crag: CragRecord;
 
 const defaultObject = {
   name: 'Test name',

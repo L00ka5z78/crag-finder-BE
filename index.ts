@@ -4,6 +4,7 @@ import 'express-async-errors';
 import config from './config/config';
 import { ValidationError, handleError } from './utils/errors';
 import { rateLimit } from 'express-rate-limit';
+import { cragRouter } from './routers/crag.router';
 
 const app = express();
 
@@ -22,9 +23,7 @@ app.use(
 
 //routers
 
-app.get('/', async (req, res) => {
-  throw new ValidationError('oh no');
-});
+app.use('/crag', cragRouter);
 
 app.use(handleError);
 
