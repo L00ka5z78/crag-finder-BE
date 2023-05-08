@@ -1,4 +1,5 @@
 import { CragRecord } from '../records/crag-record';
+import { CragEntity } from '../types';
 import { pool } from '../utils/connectDb';
 
 let ad: CragRecord;
@@ -66,10 +67,10 @@ describe('Adding CragRecord.listAllCrags', () => {
   });
 
   test('If CragRecord returns smaller amount of data', async () => {
-    const crag = await CragRecord.listAllCrags('te');
-    expect(crag[0].id).toBeDefined();
-    expect(crag[0].lat).toBeDefined();
-    expect(crag[0].lon).toBeDefined();
+    const crag = await CragRecord.listAllCrags('');
+    expect((crag[0] as CragEntity).id).toBeDefined();
+    expect((crag[0] as CragEntity).lat).toBeDefined();
+    expect((crag[0] as CragEntity).lon).toBeDefined();
   });
 });
 

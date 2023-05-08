@@ -51,20 +51,18 @@ export class CragRecord implements CragEntity {
     return results.length === 0 ? null : new CragRecord(results[0]);
   }
 
-  //   static async listAllCrags(name: string): Promise<SimpleCragEntity[]> {
-  static async listAllCrags(name: string): Promise<CragRecord[]> {
+  static async listAllCrags(name: string): Promise<SimpleCragEntity[]> {
     const [results] = (await pool.execute(
       'SELECT * FROM `crags` WHERE `name` LIKE :search',
       {
-        search: `%${name}`,
+        search: `%${name}%`,
       }
     )) as CragRecordResults;
 
-    // return results.map((result) => {
-    //   const { id, lat, lon } = result;
-    //   return { id, lat, lon };
-    // });
-    return results.map((result) => new CragRecord(result));
+    return results.map((result) => {
+      const { id, lat, lon } = result;
+      return { id, lat, lon };
+    });
   }
 
   async createNewCrag(): Promise<void> {
