@@ -66,6 +66,13 @@ export class CragRecord implements CragEntity {
     });
   }
 
+  static async getAllCrags() {
+    const [results] = (await pool.execute(
+      'SELECT * from `crags` ORDER BY `name` ASC'
+    )) as CragRecordResults;
+    return results.map((obj) => new CragRecord(obj));
+  }
+
   async createNewCrag(): Promise<void> {
     if (!this.id) {
       this.id = uuid();
