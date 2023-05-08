@@ -2,7 +2,7 @@ import { CragRecord } from '../records/crag-record';
 import { CragEntity } from '../types';
 import { pool } from '../utils/connectDb';
 
-let ad: CragRecord;
+let crag: CragRecord;
 
 const defaultObject = {
   name: 'Test name',
@@ -87,6 +87,32 @@ describe('If CragRecord.createNewCrag creates new crag', () => {
   test('If CragRecord.createNewCrag add data to database', async () => {
     const crag = new CragRecord(defaultObject);
     await crag.createNewCrag();
+
+    const foundCrag = await CragRecord.getOneCragById(crag.id);
+
+    expect(foundCrag).toBeDefined();
+    expect(foundCrag).not.toBeNull();
+    expect(foundCrag!.id).toBe(crag.id);
+  });
+});
+
+describe('If CragRecord.deleteCrag removes crag from database', () => {
+  test('If CragRecord.deleteCrag removes data from database', async () => {
+    const crag = new CragRecord(defaultObject);
+    await crag.createNewCrag();
+
+    const foundCrag = await CragRecord.getOneCragById(crag.id);
+
+    expect(foundCrag).not.toBeDefined();
+    expect(foundCrag!.id).not.toBe(crag.id);
+  });
+});
+
+describe('If CragRecord.updateCragDetails updates given crag', () => {
+  // test doesnt pass
+  test('If CragRecord.updateCragDetails add data to database', async () => {
+    const crag = new CragRecord(defaultObject);
+    await crag.updateCragDetails();
 
     const foundCrag = await CragRecord.getOneCragById(crag.id);
 
