@@ -2,6 +2,7 @@ import { FieldPacket } from 'mysql2';
 import { CragEntity, NewCragEntity, SimpleCragEntity } from '../types';
 import { pool } from '../utils/connectDb';
 import { ValidationError } from '../utils/errors';
+import { v4 as uuid } from 'uuid';
 
 type CragRecordResults = [CragEntity[], FieldPacket[]];
 
@@ -66,13 +67,14 @@ export class CragRecord implements CragEntity {
   }
 
   async createNewCrag(): Promise<void> {
-    try {
-      await pool.execute(
-        'INSERT INTO `crags`(`id`, `name`, `description`, `url`, `lat`, `lon`) VALUES (:id, :name, :description, :url, :lat, :lon);',
-        this
-      );
-    } catch (e) {
-      throw new ValidationError('This id is in our database!');
+    if (!this.id) {
+      this.id = uuid();
+    } else {
+      throw new Error('This id is in our database!');
     }
+    await pool.execute(
+      'INSERT INTO `crags`(`id`, `name`, `description`, `url`, `lat`, `lon`) VALUES (:id, :name, :description, :url, :lat, :lon)',
+      this
+    );
   }
 }

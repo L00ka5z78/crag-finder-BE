@@ -74,11 +74,14 @@ describe('Adding CragRecord.listAllCrags', () => {
   });
 });
 
-describe('If CragRecord.createNewCrag create new crag', () => {
+describe('If CragRecord.createNewCrag creates new crag', () => {
   test('If  CragRecord.createNewCrag returns new UUID', async () => {
-    const add = new CragRecord(defaultObject);
-    expect(add.id).toBeDefined();
-    expect(typeof add.id).toBe('string');
+    const crag = new CragRecord(defaultObject);
+
+    await crag.createNewCrag();
+
+    expect(crag.id).toBeDefined();
+    expect(typeof crag.id).toBe('string');
   });
 
   test('If CragRecord.createNewCrag add data to database', async () => {
