@@ -77,9 +77,15 @@ export class CragRecord implements CragEntity {
       this
     );
   }
-  async deleteCrag(): Promise<void> {
-    await pool.execute('DELETE FROM `crags` WHERE `id` = :id', {
-      id: this.id,
+  //   async deleteCrag(): Promise<void> {
+  //     await pool.execute('DELETE FROM `crags` WHERE `id` = :id', {
+  //       id: this.id,
+  //     });
+  //   }
+
+  static deleteCrag(id: string) {
+    pool.execute('DELETE FROM `crags` WHERE `id` = :id', {
+      id,
     });
   }
 
