@@ -8,6 +8,7 @@ const defaultObject = {
   name: 'Test name',
   description: 'crag description',
   url: 'https//google.com',
+  routes: 123,
   lat: 9,
   lon: 9,
 };

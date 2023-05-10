@@ -13,6 +13,5 @@ export interface CragEntity extends SimpleCragEntity {
   name: string;
   description: string;
   url: string;
-  // lat: number;
-  // lon: number;
+  routes: number; //add to  db
 }

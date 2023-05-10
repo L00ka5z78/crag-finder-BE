@@ -34,6 +34,7 @@ export const cragRouter = Router()
     crag.name = req.body.name;
     crag.description = req.body.description;
     crag.url = req.body.url;
+    crag.routes = req.body.routes;
     crag.lat = req.body.lat;
     crag.lon = req.body.lon;
 

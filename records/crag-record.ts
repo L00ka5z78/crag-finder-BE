@@ -10,6 +10,7 @@ export class CragRecord implements CragEntity {
   public id: string;
   public name: string;
   public description: string;
+  public routes: number;
   public url: string;
   public lat: number;
   public lon: number;
@@ -25,6 +26,10 @@ export class CragRecord implements CragEntity {
         "Crags description can't be longer than 1000 characters"
       );
     }
+
+    if (obj.routes < 0 || obj.routes > 9999) {
+      throw new ValidationError('Routes count has to be between 0 - 9 999');
+    }
     //@ todo check if url is valid
     if (!obj.url || obj.url.length > 100) {
       throw new ValidationError(
@@ -37,6 +42,7 @@ export class CragRecord implements CragEntity {
     this.id = obj.id;
     this.name = obj.name;
     this.description = obj.description;
+    this.routes = obj.routes;
     this.url = obj.url;
     this.lat = obj.lat;
     this.lon = obj.lon;
@@ -84,11 +90,6 @@ export class CragRecord implements CragEntity {
       this
     );
   }
-  //   async deleteCrag(): Promise<void> {
-  //     await pool.execute('DELETE FROM `crags` WHERE `id` = :id', {
-  //       id: this.id,
-  //     });
-  //   }
 
   static deleteCrag(id: string) {
     pool.execute('DELETE FROM `crags` WHERE `id` = :id', {
