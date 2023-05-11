@@ -2,7 +2,9 @@ import { Router } from 'express';
 import { CragRecord } from '../records/crag-record';
 import { ValidationError } from '../utils/errors';
 
-export const cragRouter = Router()
+export const cragRouter = Router();
+
+cragRouter
   .get('/search/:name?', async (req, res) => {
     const crags = await CragRecord.listAllCrags(req.params.name ?? '');
 
