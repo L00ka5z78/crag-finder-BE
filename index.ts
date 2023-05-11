@@ -2,24 +2,14 @@ import express, { json } from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 import config from './config/config';
-import { ValidationError, handleError } from './utils/errors';
-import { rateLimit } from 'express-rate-limit';
+import { handleError } from './utils/errors';
 import { cragRouter } from './routers/crag.router';
+import { corsInit, limiter } from './config';
 
 const app = express();
-
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-  })
-);
+app.use(corsInit);
 app.use(json());
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000, //15min
-    max: 100, //limit each ip to 100 requests per window (in this case per 15 min)
-  })
-);
+app.use(limiter);
 
 //routers
 
