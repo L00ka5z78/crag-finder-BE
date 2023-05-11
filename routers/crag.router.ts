@@ -1,7 +1,11 @@
 import { Router } from 'express';
 import { CragRecord } from '../records/crag-record';
 import { ValidationError } from '../utils/errors';
-import { addNewCrag } from '../controllers/crag-controller';
+import {
+  addNewCrag,
+  getById,
+  searchByName,
+} from '../controllers/crag-controller';
 
 export const cragRouter = Router();
 
@@ -11,11 +15,14 @@ cragRouter
 
     res.json(crags);
   })
+  // .get('/search/:name?', searchByName)
 
-  .get('/:id', async (req, res) => {
-    const crag = await CragRecord.getOneCragById(req.params.id);
-    res.json(crag);
-  })
+  // .get('/:id', async (req, res) => {
+  //   const crag = await CragRecord.getOneCragById(req.params.id);
+  //   res.json(crag);
+  // })
+
+  .get('/:id', getById)
 
   .post('/', addNewCrag)
 

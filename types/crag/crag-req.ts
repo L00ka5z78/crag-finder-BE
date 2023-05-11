@@ -1,6 +1,6 @@
 import { CragEntity } from './crag-entity';
 
-export type AddAdRequest = Omit<CragEntity, 'id'>;
+export type AddCragRequest = Omit<CragEntity, 'id'>;
 
 export interface GetCragSingleParam {
   id: string;
