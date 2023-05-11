@@ -1,4 +1,4 @@
 import { CragEntity, SimpleCragEntity } from './crag-entity';
 
-export type GetListOfAdsResponse = SimpleCragEntity[];
-export type GetOneAdResponse = CragEntity;
+export type GetCragListResponse = SimpleCragEntity[];
+export type GetOneCragResponse = CragEntity;

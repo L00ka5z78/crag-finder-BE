@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { CragRecord } from '../records/crag-record';
 import { ValidationError } from '../utils/errors';
+import { addNewCrag } from '../controllers/crag-controller';
 
 export const cragRouter = Router();
 
@@ -16,11 +17,7 @@ cragRouter
     res.json(crag);
   })
 
-  .post('/', async (req, res) => {
-    const newCrag = new CragRecord(req.body);
-    await newCrag.createNewCrag();
-    res.json(newCrag);
-  })
+  .post('/', addNewCrag)
 
   .delete('/delete/:id', async (req, res) => {
     const crag = CragRecord.deleteCrag(req.params.id);
