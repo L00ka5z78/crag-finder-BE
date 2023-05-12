@@ -22,6 +22,7 @@ export const addNewCrag = async (
     data: newCrag,
     status: 201,
   });
+  // .redirect('/');
 };
 
 export const listCrags = async (req: Request, res: Response) => {
@@ -97,6 +98,11 @@ export const removeCrag = (
   res: Response
 ) => {
   const crag = CragRecord.deleteCrag(req.params.id);
+
+  if (crag === null) {
+    throw new ValidationError('Cant find crag with given ID');
+  }
+
   res.status(200).json({
     ok: true,
     data: crag,
