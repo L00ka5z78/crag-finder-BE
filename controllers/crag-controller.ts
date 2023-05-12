@@ -9,6 +9,7 @@ import {
 } from '../types';
 import { CragRecord } from '../records/crag-record';
 import { ValidationError } from '../utils/errors';
+import { BadRequest } from '../common';
 
 export const addNewCrag = async (
   req: Request<never, ClientApiResponse<GetOneCragResponse>, AddCragRequest>,
@@ -49,7 +50,7 @@ export const getSingleCragById = async (
   const crag = await CragRecord.getOneCragById(req.params.id);
 
   if (!crag) {
-    throw new ValidationError('There is no crag with given ID');
+    throw new BadRequest('There is no crag with given ID');
   }
   res.status(200).json({
     ok: true,
