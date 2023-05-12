@@ -3,6 +3,7 @@ import { CragEntity, NewCragEntity, SimpleCragEntity } from '../types';
 import { pool } from '../utils/connectDb';
 import { ValidationError } from '../utils/errors';
 import { v4 as uuid } from 'uuid';
+import { BadRequest, CustomError } from '../common';
 
 type CragRecordResults = [CragEntity[], FieldPacket[]];
 
@@ -17,27 +18,27 @@ export class CragRecord implements CragEntity {
 
   constructor(obj: NewCragEntity) {
     if (!obj.name || obj.name.length > 100) {
-      throw new ValidationError(
+      throw new BadRequest(
         "Crags name can't be empty or longer than 100 characters"
       );
     }
     if (obj.description.length > 1000) {
-      throw new ValidationError(
+      throw new BadRequest(
         "Crags description can't be longer than 1000 characters"
       );
     }
 
     if (obj.routes < 0 || obj.routes > 9999) {
-      throw new ValidationError('Routes count has to be between 0 - 9 999');
+      throw new BadRequest('Routes count has to be between 0 - 9 999');
     }
     //@ todo check if url is valid
     if (!obj.url || obj.url.length > 100) {
-      throw new ValidationError(
+      throw new BadRequest(
         "URL address can't be empty or longer than 100 characters"
       );
     }
     if (typeof obj.lat !== 'number' || typeof obj.lon !== 'number') {
-      throw new ValidationError('Invalid coordinates');
+      throw new BadRequest('Invalid coordinates');
     }
     this.id = obj.id;
     this.name = obj.name;
@@ -83,7 +84,7 @@ export class CragRecord implements CragEntity {
     if (!this.id) {
       this.id = uuid();
     } else {
-      throw new Error('This id is in our database!');
+      throw new CustomError(409, 'This id is in our database!');
     }
     await pool.execute(
       'INSERT INTO `crags`(`id`, `name`, `description`, `url`, `lat`, `lon`) VALUES (:id, :name, :description, :url, :lat, :lon)',
