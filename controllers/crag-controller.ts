@@ -47,6 +47,10 @@ export const getSingleCragById = async (
   res: Response
 ) => {
   const crag = await CragRecord.getOneCragById(req.params.id);
+
+  if (!crag) {
+    throw new ValidationError('There is no crag with given ID');
+  }
   res.status(200).json({
     ok: true,
     data: crag,
