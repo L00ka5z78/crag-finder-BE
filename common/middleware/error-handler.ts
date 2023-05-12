@@ -9,7 +9,7 @@ export const errorHandler = (
   next: NextFunction
 ): void => {
   const status = err.status || 500;
-  const message = err.message || 'something went wrong...';
+  const message = err.message || 'Something went wrong...';
 
   console.log({
     status,
