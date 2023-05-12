@@ -7,6 +7,11 @@ const config = {
     JWT_KEY:
       'hbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY3NzQ4MzcwNCwiaWF0IjoxNjc',
   },
+  database: {
+    USER: 'root',
+    PASSWORD: '',
+    DATABASE: 'crag_finder',
+  },
 };
 
 export default config;

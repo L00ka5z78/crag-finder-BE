@@ -3,6 +3,7 @@ import { CragEntity, NewCragEntity, SimpleCragEntity } from '../types';
 import { pool } from '../utils/connectDb';
 import { ValidationError } from '../utils/errors';
 import { v4 as uuid } from 'uuid';
+import { BadRequest, CustomError } from '../common';
 
 type CragRecordResults = [CragEntity[], FieldPacket[]];
 
@@ -10,33 +11,39 @@ export class CragRecord implements CragEntity {
   public id: string;
   public name: string;
   public description: string;
+  public routes: number;
   public url: string;
   public lat: number;
   public lon: number;
 
   constructor(obj: NewCragEntity) {
     if (!obj.name || obj.name.length > 100) {
-      throw new ValidationError(
+      throw new BadRequest(
         "Crags name can't be empty or longer than 100 characters"
       );
     }
     if (obj.description.length > 1000) {
-      throw new ValidationError(
+      throw new BadRequest(
         "Crags description can't be longer than 1000 characters"
       );
     }
+
+    if (obj.routes < 0 || obj.routes > 9999) {
+      throw new BadRequest('Routes count has to be between 0 - 9 999');
+    }
     //@ todo check if url is valid
     if (!obj.url || obj.url.length > 100) {
-      throw new ValidationError(
+      throw new BadRequest(
         "URL address can't be empty or longer than 100 characters"
       );
     }
     if (typeof obj.lat !== 'number' || typeof obj.lon !== 'number') {
-      throw new ValidationError('Invalid coordinates');
+      throw new BadRequest('Invalid coordinates');
     }
     this.id = obj.id;
     this.name = obj.name;
     this.description = obj.description;
+    this.routes = obj.routes;
     this.url = obj.url;
     this.lat = obj.lat;
     this.lon = obj.lon;
@@ -66,20 +73,28 @@ export class CragRecord implements CragEntity {
     });
   }
 
+  static async getAllCrags() {
+    const [results] = (await pool.execute(
+      'SELECT * from `crags` ORDER BY `name` ASC'
+    )) as CragRecordResults;
+    return results.map((obj) => new CragRecord(obj));
+  }
+
   async createNewCrag(): Promise<void> {
     if (!this.id) {
       this.id = uuid();
     } else {
-      throw new Error('This id is in our database!');
+      throw new CustomError(409, 'This id is in our database!');
     }
     await pool.execute(
       'INSERT INTO `crags`(`id`, `name`, `description`, `url`, `lat`, `lon`) VALUES (:id, :name, :description, :url, :lat, :lon)',
       this
     );
   }
-  async deleteCrag(): Promise<void> {
-    await pool.execute('DELETE FROM `crags` WHERE `id` = :id', {
-      id: this.id,
+
+  static deleteCrag(id: string) {
+    pool.execute('DELETE FROM `crags` WHERE `id` = :id', {
+      id,
     });
   }
 

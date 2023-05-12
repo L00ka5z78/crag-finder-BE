@@ -4,6 +4,7 @@ const defaultObject = {
   name: 'Test name',
   description: 'crag description',
   url: 'https//google.com',
+  routes: 213,
   lat: 9,
   lon: 9,
 };

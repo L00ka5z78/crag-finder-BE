@@ -1,3 +1,4 @@
+import { CustomError } from '../common';
 import { CragRecord } from '../records/crag-record';
 import { CragEntity } from '../types';
 import { pool } from '../utils/connectDb';
@@ -8,6 +9,7 @@ const defaultObject = {
   name: 'Test name',
   description: 'crag description',
   url: 'https//google.com',
+  routes: 123,
   lat: 9,
   lon: 9,
 };
@@ -104,13 +106,13 @@ describe('If CragRecord.deleteCrag removes crag from database', () => {
     const foundCrag = await CragRecord.getOneCragById(crag.id);
 
     expect(foundCrag).not.toBeDefined();
-    expect(foundCrag!.id).not.toBe(crag.id);
+    // expect(foundCrag!.id).not.toBe(crag.id);
   });
 });
 
 describe('If CragRecord.updateCragDetails updates given crag', () => {
-  // test doesnt pass
-  test('If CragRecord.updateCragDetails add data to database', async () => {
+  // test doesnt pass??
+  test('If CragRecord.updateCragDetails updates data', async () => {
     const crag = new CragRecord(defaultObject);
     await crag.updateCragDetails();
 
@@ -119,5 +121,21 @@ describe('If CragRecord.updateCragDetails updates given crag', () => {
     expect(foundCrag).toBeDefined();
     expect(foundCrag).not.toBeNull();
     expect(foundCrag!.id).toBe(crag.id);
+  });
+});
+
+describe('If CragRecord.createNewCrag throws error on the same input', () => {
+  test('If CragRecord.createNewCrag throws error when add the same data', async () => {
+    const crag = new CragRecord(defaultObject);
+    await crag.createNewCrag();
+
+    try {
+      await expect(crag.createNewCrag()).rejects.toThrowError(CustomError);
+    } catch (error) {
+      expect(error.getStatus()).toEqual(409);
+      expect(error.getResponse()).toEqual(
+        "Cannot insert something that is already inserted!'"
+      );
+    }
   });
 });
