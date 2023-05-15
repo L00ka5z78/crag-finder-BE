@@ -1,7 +1,3 @@
-export interface NewCragEntity extends Omit<CragEntity, 'id'> {
-  id?: string;
-}
-
 export interface SimpleCragEntity {
   id?: string;
   lat: number;
@@ -13,5 +9,8 @@ export interface CragEntity extends SimpleCragEntity {
   name: string;
   description: string;
   url: string;
-  routes: number; //add to  db
+  routes: number;
+}
+export interface NewCragEntity extends Omit<CragEntity, 'id'> {
+  id?: string;
 }

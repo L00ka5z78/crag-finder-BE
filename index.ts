@@ -1,5 +1,4 @@
 import express, { json } from 'express';
-import cors from 'cors';
 import 'express-async-errors';
 import config from './config/config';
 import { handleError } from './utils/errors';
