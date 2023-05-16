@@ -1,11 +1,10 @@
 export interface SimpleCragEntity {
-  id?: string;
+  id: string;
   lat: number;
   lon: number;
 }
 
 export interface CragEntity extends SimpleCragEntity {
-  // id?: string;
   name: string;
   description: string;
   url: string;
