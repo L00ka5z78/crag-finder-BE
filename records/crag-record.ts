@@ -86,7 +86,7 @@ export class CragRecord implements CragEntity {
       throw new CustomError(409, 'This id is in our database!');
     }
     await pool.execute(
-      'INSERT INTO `crags`(`id`, `name`, `description`, `url`, `lat`, `lon`) VALUES (:id, :name, :description, :url, :lat, :lon)',
+      'INSERT INTO `crags`(`id`, `name`, `description`, `url`, `routes`, `lat`, `lon`) VALUES (:id, :name, :description, :url, :routes, :lat, :lon)',
       this
     );
   }
@@ -99,12 +99,13 @@ export class CragRecord implements CragEntity {
 
   async updateCragDetails(): Promise<void> {
     await pool.execute(
-      'UPDATE `crags` SET `name` = :name, `description` = :description, `url` = :url, `lat` = :lat, `lon` = :lon WHERE `id` = :id',
+      'UPDATE `crags` SET `name` = :name, `description` = :description, `url` = :url, `routes` = :routes,  `lat` = :lat, `lon` = :lon WHERE `id` = :id',
       {
         id: this.id,
         name: this.name,
         description: this.description,
         url: this.url,
+        routes: this.routes,
         lat: this.lat,
         lon: this.lon,
       }
