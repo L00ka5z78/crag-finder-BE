@@ -1,6 +1,6 @@
 import { CustomError } from './index';
 
-export class InvalidAuthTokenError extends CustomError {
+export class InvalidAuthTokenErr extends CustomError {
   constructor() {
     super(401, 'Invalid auth token!');
   }

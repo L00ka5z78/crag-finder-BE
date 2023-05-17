@@ -1,6 +1,6 @@
 import { CustomError } from './custom-error';
 
-export class ValidationError extends CustomError {
+export class ValidationErr extends CustomError {
   constructor(message: string) {
     super(400, message);
   }
