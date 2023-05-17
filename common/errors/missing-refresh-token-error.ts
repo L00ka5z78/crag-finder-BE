@@ -1,7 +1,7 @@
 import { CustomError } from './custom-error';
 
 export class RefreshTokenMissingErr extends CustomError {
-  constructor(message: string) {
+  constructor() {
     super(401, 'Refresh token missing!');
   }
 }
