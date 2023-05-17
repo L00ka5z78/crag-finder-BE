@@ -12,6 +12,8 @@ export const createAccessToken = (
   userId: string
 ): ITokenData => {
   const expiresIn = Number(config.jsonWebToken.ACCESS_TOKEN_TIME_TO_LIVE);
+  // const expiresIn = config.jsonWebToken.ACCESS_TOKEN_TIME_TO_LIVE;
+
   const jwtSecretKey = config.jsonWebToken.JWT_KEY;
   const payload: IJwtPayload = {
     id: userId,
@@ -36,6 +38,8 @@ export const updateRefreshToken = async (
 
 export const createRefreshToken = (userId: string): ITokenData => {
   const expiresIn = Number(config.jsonWebToken.REFRESH_TOKEN_TIME_TO_LIVE);
+  // const expiresIn = config.jsonWebToken.REFRESH_TOKEN_TIME_TO_LIVE;
+
   const jwtSecretKey = config.jsonWebToken.REFRESH_JWT_KEY;
 
   try {
