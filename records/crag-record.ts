@@ -1,7 +1,6 @@
 import { FieldPacket } from 'mysql2';
 import { CragEntity, NewCragEntity, SimpleCragEntity } from '../types';
 import { pool } from '../utils/connectDb';
-import { ValidationError } from '../utils/errors';
 import { v4 as uuid } from 'uuid';
 import { BadRequest, CustomError } from '../common';
 
