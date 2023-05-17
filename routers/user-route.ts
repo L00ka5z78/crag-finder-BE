@@ -3,4 +3,4 @@ import { userProfile } from '../controllers';
 
 export const userRoute = Router();
 
-userRoute.get('/profile', authMiddleware, userProfile);
+userRoute.get('/profile', userProfile);

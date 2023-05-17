@@ -6,5 +6,5 @@ export const userProfile: RequestHandler<unknown, UserEntity> = async (
   res,
   next
 ) => {
-  const loggedInUser = req.user;
+  // const loggedInUser = req.user;
 };

@@ -8,6 +8,6 @@ authRoute
 
   .post('/register', register)
 
-  .post('/logout', authMiddleware, logout)
+  .post('/logout', logout)
 
-  .post('/refresh', refreshMiddleware, refresh);
+  .post('/refresh', refresh);
