@@ -1,7 +1,7 @@
 import { CustomError } from './custom-error';
 
 export class AuthTokenMissingErr extends CustomError {
-  constructor(message: string) {
+  constructor() {
     super(401, 'Authentication token missing');
   }
 }
