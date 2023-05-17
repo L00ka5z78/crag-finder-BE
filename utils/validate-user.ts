@@ -15,7 +15,7 @@ export const validateUserData = (
   >
 ) => {
   if (!req.body.email || !req.body.password) {
-    throw new CustomError(400, 'Please include email and password.');
+    throw new CustomError(400, 'Please fill out email and password.');
   }
 
   return { email: req.body.email, password: req.body.password };
