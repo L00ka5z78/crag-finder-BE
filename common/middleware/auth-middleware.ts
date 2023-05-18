@@ -4,6 +4,7 @@ import { verify } from 'jsonwebtoken';
 import { IJwtPayload } from '../../types';
 import { checkHash } from '../../utils';
 import { AuthTokenMissingErr, InvalidAuthTokenErr } from '../errors';
+import config from '../../config/config';
 
 declare global {
   namespace Express {
@@ -22,7 +23,7 @@ export const authMiddleware: RequestHandler<unknown> = async (
 
   if (cookies && cookies.Authorization) {
     try {
-      const jwtSecretKey = process.env.JWT_SECRET_KEY;
+      const jwtSecretKey = config.jsonWebToken.JWT_KEY;
       const verificationRes = verify(
         cookies.Authorization,
         jwtSecretKey
