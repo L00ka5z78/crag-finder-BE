@@ -15,3 +15,5 @@ export const handleError = (
       err instanceof ValidationError ? err.message : ' Sorry, try again later',
   });
 };
+/** probably unnecessary after creating error directory with exceptions
+ *  and implementing errors into middlewares etc  */

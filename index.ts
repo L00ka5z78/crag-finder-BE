@@ -5,6 +5,7 @@ import { handleError } from './utils/errors';
 import { cragRouter } from './routers/crag.router';
 import { corsInit, limiter } from './config';
 import { authRoute, userRoute } from './routers';
+import { errorHandler } from './common';
 
 const app = express();
 app.use(corsInit);
@@ -14,10 +15,11 @@ app.use(limiter);
 //routers
 
 app.use('/auth', authRoute);
-app.use('/user', userRoute);
+app.use('/user', userRoute); //for testing purposes
 app.use('/crag', cragRouter);
 
 app.use(handleError); // replace it with error midleware when it is created
+app.use(errorHandler); //added 17.05 16:17
 
 app.listen(3001, '0.0.0.0', () => {
   console.log(
