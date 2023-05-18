@@ -84,4 +84,17 @@ export const logout: RequestHandler<unknown, { ok: boolean }> = async (
   res.status(200).json({ ok: true });
 };
 
-export const refresh = () => {};
+export const refresh = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = req.user;
+  const currentToken = await generateCurrentToken(user);
+  const accessToken = createAccessToken(currentToken, user.id);
+  const refreshTokenData = createRefreshToken(user.id);
+
+  setCookie(res, CookiesNames.AUTHORIZATION, accessToken);
+  setCookie(res, CookiesNames.REFRESH, refreshTokenData);
+  res.status(200).json(serializeUserData(user));
+};
