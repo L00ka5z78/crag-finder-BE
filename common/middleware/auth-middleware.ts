@@ -48,3 +48,9 @@ export const authMiddleware: RequestHandler<unknown> = async (
     next(new AuthTokenMissingErr());
   }
 };
+/** those errors throws if one wants to logout or refresh token
+ * no idea why actually. REMEMBER put secret key into POSTMAN auth
+ *
+ * TypeError: Cannot read properties of undefined (reading 'Refresh')
+ * AuthTokenMissingErr [Error]: Authentication token missing
+ */
