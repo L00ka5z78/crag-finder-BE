@@ -6,7 +6,13 @@ import {
   UserRegisterRequest,
   UserRegisterResponse,
 } from '../types';
-import { checkHash, hashData, setCookie, validateUserData } from '../utils';
+import {
+  checkHash,
+  clearCookie,
+  hashData,
+  setCookie,
+  validateUserData,
+} from '../utils';
 import {
   InvalidCredentialsErr,
   UserWithExistingEmailErr,
@@ -63,6 +69,19 @@ export const login: RequestHandler<
   res.status(200).json(serializeUserData(user));
 };
 
-export const logout = () => {};
+export const logout: RequestHandler<unknown, { ok: boolean }> = async (
+  req,
+  res,
+  next
+) => {
+  const loggedInUser = req.user;
+  loggedInUser.currentToken = null;
+  loggedInUser.refreshToken = null;
+  await loggedInUser.updateUser();
+
+  clearCookie(res, CookiesNames.AUTHORIZATION);
+  clearCookie(res, CookiesNames.REFRESH);
+  res.status(200).json({ ok: true });
+};
 
 export const refresh = () => {};
