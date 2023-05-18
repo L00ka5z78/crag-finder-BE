@@ -34,9 +34,6 @@ export const listCrags = async (req: Request, res: Response) => {
     data: crags,
     status: 200,
   });
-  //   res.json({
-  //     crags,
-  //   });
 };
 
 export const getSingleCragById = async (
@@ -94,8 +91,6 @@ export const updateDetails = async (
     data: crag,
     status: 204,
   });
-
-  //   res.json(crag);
 };
 
 export const removeCrag = (
