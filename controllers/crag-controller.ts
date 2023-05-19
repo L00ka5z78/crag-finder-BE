@@ -56,10 +56,10 @@ export const listCrags = async (req: Request, res: Response) => {
   try {
     const crags = await CragRecord.getAllCrags();
 
-    res.status(201).json({
+    res.status(200).json({
       ok: true,
       data: crags,
-      status: 201,
+      status: 200,
     });
 
     timer({ ...metricsLabels, success: 'true' });
@@ -85,29 +85,72 @@ export const getSingleCragById = async (
   >,
   res: Response
 ) => {
-  const crag = await CragRecord.getOneCragById(req.params.id);
+  const metricsLabels = {
+    operation: 'getSingleCragById',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const crag = await CragRecord.getOneCragById(req.params.id);
+    if (!crag) {
+      throw new BadRequest('There is no crag with given ID');
+    }
 
-  if (!crag) {
-    throw new BadRequest('There is no crag with given ID');
+    res.status(200).json({
+      ok: true,
+      data: crag,
+      status: 200,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return crag;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
   }
-  res.status(200).json({
-    ok: true,
-    data: crag,
-    status: 200,
-  });
+
+  // const crag = await CragRecord.getOneCragById(req.params.id);
+
+  // if (!crag) {
+  //   throw new BadRequest('There is no crag with given ID');
+  // }
+  // res.status(200).json({
+  //   ok: true,
+  //   data: crag,
+  //   status: 200,
+  // });
 };
 
 export const getCragsByName = async (
   req: Request<GetSearchParam, ClientApiResponse<GetCragListResponse>, never>,
   res: Response
 ) => {
-  const crags = await CragRecord.listAllCrags(req.params.name ?? '');
+  const metricsLabels = {
+    operation: 'getCragsByName',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const crags = await CragRecord.listAllCrags(req.params.name ?? '');
 
-  res.status(200).json({
-    ok: true,
-    data: crags,
-    status: 200,
-  });
+    res.status(200).json({
+      ok: true,
+      data: crags,
+      status: 200,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return crags;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
+  }
+
+  // const crags = await CragRecord.listAllCrags(req.params.name ?? '');
+
+  // res.status(200).json({
+  //   ok: true,
+  //   data: crags,
+  //   status: 200,
+  // });
 };
 
 export const updateDetails = async (
