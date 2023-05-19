@@ -10,20 +10,42 @@ import {
 import { CragRecord } from '../records/crag-record';
 import { ValidationError } from '../utils/errors';
 import { BadRequest } from '../common';
+import { databaseResponseTimeHistogram } from '../utils';
 
 export const addNewCrag = async (
   req: Request<never, ClientApiResponse<GetOneCragResponse>, AddCragRequest>,
   res: Response
 ) => {
-  const newCrag = new CragRecord(req.body);
-  await newCrag.createNewCrag();
+  const metricsLabels = {
+    operation: 'addNewCrag',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const newCrag = new CragRecord(req.body);
+    await newCrag.createNewCrag();
 
-  res.status(201).json({
-    ok: true,
-    data: newCrag,
-    status: 201,
-  });
-  // .redirect('/');
+    res.status(201).json({
+      ok: true,
+      data: newCrag,
+      status: 201,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return newCrag;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
+  }
+
+  // const newCrag = new CragRecord(req.body);
+  // await newCrag.createNewCrag();
+
+  // res.status(201).json({
+  //   ok: true,
+  //   data: newCrag,
+  //   status: 201,
+  // });
+  //before testing metrics
 };
 
 export const listCrags = async (req: Request, res: Response) => {
