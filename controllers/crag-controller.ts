@@ -49,13 +49,32 @@ export const addNewCrag = async (
 };
 
 export const listCrags = async (req: Request, res: Response) => {
-  const crags = await CragRecord.getAllCrags();
+  const metricsLabels = {
+    operation: 'listCrags',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const crags = await CragRecord.getAllCrags();
 
-  res.status(200).json({
-    ok: true,
-    data: crags,
-    status: 200,
-  });
+    res.status(201).json({
+      ok: true,
+      data: crags,
+      status: 201,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return crags;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
+  }
+
+  // const crags = await CragRecord.getAllCrags();
+  // res.status(200).json({
+  //   ok: true,
+  //   data: crags,
+  //   status: 200,
+  // });
 };
 
 export const getSingleCragById = async (
