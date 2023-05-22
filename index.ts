@@ -1,16 +1,25 @@
 import express, { json } from 'express';
-import cors from 'cors';
 import 'express-async-errors';
 import config from './config/config';
+import { handleError } from './utils/errors';
+import { cragRouter } from './routers/crag.router';
+import { corsInit, limiter } from './config';
+import { authRoute, userRoute } from './routers';
+import { errorHandler } from './common';
 
 const app = express();
-
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-  })
-);
+app.use(corsInit);
 app.use(json());
+app.use(limiter);
+
+//routers
+
+app.use('/auth', authRoute);
+app.use('/user', userRoute); //for testing purposes
+app.use('/crag', cragRouter);
+
+app.use(handleError); // replace it with error midleware when it is created
+app.use(errorHandler); //added 17.05 16:17
 
 app.listen(3001, '0.0.0.0', () => {
   console.log(
