@@ -21,9 +21,10 @@ export const refreshMiddleware: RequestHandler<unknown> = async (
 ) => {
   const cookies = req.cookies;
   const refreshToken = cookies[CookiesNames.REFRESH];
+
   if (cookies && refreshToken) {
     try {
-      const jwtSecretKey = config.jsonWebToken.JWT_KEY;
+      const jwtSecretKey = config.jsonWebToken.REFRESH_JWT_KEY;
       const verifyResponse = verify(
         refreshToken,
         jwtSecretKey

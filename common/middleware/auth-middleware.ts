@@ -4,6 +4,7 @@ import { verify } from 'jsonwebtoken';
 import { IJwtPayload } from '../../types';
 import { checkHash } from '../../utils';
 import { AuthTokenMissingErr, InvalidAuthTokenErr } from '../errors';
+import config from '../../config/config';
 
 declare global {
   namespace Express {
@@ -22,7 +23,7 @@ export const authMiddleware: RequestHandler<unknown> = async (
 
   if (cookies && cookies.Authorization) {
     try {
-      const jwtSecretKey = process.env.JWT_SECRET_KEY;
+      const jwtSecretKey = config.jsonWebToken.JWT_KEY;
       const verificationRes = verify(
         cookies.Authorization,
         jwtSecretKey
@@ -47,3 +48,9 @@ export const authMiddleware: RequestHandler<unknown> = async (
     next(new AuthTokenMissingErr());
   }
 };
+/** those errors throws if one wants to logout or refresh token
+ * no idea why actually. REMEMBER put secret key into POSTMAN auth
+ *
+ * TypeError: Cannot read properties of undefined (reading 'Refresh')
+ * AuthTokenMissingErr [Error]: Authentication token missing
+ */

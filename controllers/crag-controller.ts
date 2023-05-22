@@ -10,30 +10,71 @@ import {
 import { CragRecord } from '../records/crag-record';
 import { ValidationError } from '../utils/errors';
 import { BadRequest } from '../common';
+import { databaseResponseTimeHistogram } from '../utils';
 
 export const addNewCrag = async (
   req: Request<never, ClientApiResponse<GetOneCragResponse>, AddCragRequest>,
   res: Response
 ) => {
-  const newCrag = new CragRecord(req.body);
-  await newCrag.createNewCrag();
+  const metricsLabels = {
+    operation: 'addNewCrag',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const newCrag = new CragRecord(req.body);
+    await newCrag.createNewCrag();
 
-  res.status(201).json({
-    ok: true,
-    data: newCrag,
-    status: 201,
-  });
-  // .redirect('/');
+    res.status(201).json({
+      ok: true,
+      data: newCrag,
+      status: 201,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return newCrag;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
+  }
+
+  // const newCrag = new CragRecord(req.body);
+  // await newCrag.createNewCrag();
+
+  // res.status(201).json({
+  //   ok: true,
+  //   data: newCrag,
+  //   status: 201,
+  // });
+  //before testing metrics
 };
 
 export const listCrags = async (req: Request, res: Response) => {
-  const crags = await CragRecord.getAllCrags();
+  const metricsLabels = {
+    operation: 'listCrags',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const crags = await CragRecord.getAllCrags();
 
-  res.status(200).json({
-    ok: true,
-    data: crags,
-    status: 200,
-  });
+    res.status(200).json({
+      ok: true,
+      data: crags,
+      status: 200,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return crags;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
+  }
+
+  // const crags = await CragRecord.getAllCrags();
+  // res.status(200).json({
+  //   ok: true,
+  //   data: crags,
+  //   status: 200,
+  // });
 };
 
 export const getSingleCragById = async (
@@ -44,68 +85,166 @@ export const getSingleCragById = async (
   >,
   res: Response
 ) => {
-  const crag = await CragRecord.getOneCragById(req.params.id);
+  const metricsLabels = {
+    operation: 'getSingleCragById',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const crag = await CragRecord.getOneCragById(req.params.id);
+    if (!crag) {
+      throw new BadRequest('There is no crag with given ID');
+    }
 
-  if (!crag) {
-    throw new BadRequest('There is no crag with given ID');
+    res.status(200).json({
+      ok: true,
+      data: crag,
+      status: 200,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return crag;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
   }
-  res.status(200).json({
-    ok: true,
-    data: crag,
-    status: 200,
-  });
+
+  // const crag = await CragRecord.getOneCragById(req.params.id);
+
+  // if (!crag) {
+  //   throw new BadRequest('There is no crag with given ID');
+  // }
+  // res.status(200).json({
+  //   ok: true,
+  //   data: crag,
+  //   status: 200,
+  // });
 };
 
 export const getCragsByName = async (
   req: Request<GetSearchParam, ClientApiResponse<GetCragListResponse>, never>,
   res: Response
 ) => {
-  const crags = await CragRecord.listAllCrags(req.params.name ?? '');
+  const metricsLabels = {
+    operation: 'getCragsByName',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const crags = await CragRecord.listAllCrags(req.params.name ?? '');
 
-  res.status(200).json({
-    ok: true,
-    data: crags,
-    status: 200,
-  });
+    res.status(200).json({
+      ok: true,
+      data: crags,
+      status: 200,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return crags;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
+  }
+
+  // const crags = await CragRecord.listAllCrags(req.params.name ?? '');
+
+  // res.status(200).json({
+  //   ok: true,
+  //   data: crags,
+  //   status: 200,
+  // });
 };
 
 export const updateDetails = async (
   req: Request<GetCragSingleParam, ClientApiResponse<GetOneCragResponse>>,
   res: Response
 ) => {
-  const crag = await CragRecord.getOneCragById(req.params.id);
+  const metricsLabels = {
+    operation: 'updateDetails',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const crag = await CragRecord.getOneCragById(req.params.id);
 
-  if (crag === null) {
-    throw new ValidationError('Invalid ID.');
+    if (crag === null) {
+      throw new ValidationError('Invalid ID.');
+    }
+    crag.name = req.body.name;
+    crag.description = req.body.description;
+    crag.url = req.body.url;
+    crag.routes = req.body.routes;
+    crag.lat = req.body.lat;
+    crag.lon = req.body.lon;
+
+    await crag.updateCragDetails();
+
+    res.status(200).json({
+      ok: true,
+      data: crag,
+      status: 200,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return crag;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
   }
-  crag.name = req.body.name;
-  crag.description = req.body.description;
-  crag.url = req.body.url;
-  crag.routes = req.body.routes;
-  crag.lat = req.body.lat;
-  crag.lon = req.body.lon;
 
-  await crag.updateCragDetails();
-  res.status(200).json({
-    ok: true,
-    data: crag,
-    status: 204,
-  });
+  // const crag = await CragRecord.getOneCragById(req.params.id);
+
+  // if (crag === null) {
+  //   throw new ValidationError('Invalid ID.');
+  // }
+  // crag.name = req.body.name;
+  // crag.description = req.body.description;
+  // crag.url = req.body.url;
+  // crag.routes = req.body.routes;
+  // crag.lat = req.body.lat;
+  // crag.lon = req.body.lon;
+
+  // await crag.updateCragDetails();
+  // res.status(200).json({
+  //   ok: true,
+  //   data: crag,
+  //   status: 204,
+  // });
 };
 
 export const removeCrag = (
   req: Request<GetCragSingleParam, ClientApiResponse<GetOneCragResponse>>,
   res: Response
 ) => {
-  const crag = CragRecord.deleteCrag(req.params.id);
+  const metricsLabels = {
+    operation: 'removeCrag',
+  };
+  const timer = databaseResponseTimeHistogram.startTimer();
+  try {
+    const crag = CragRecord.deleteCrag(req.params.id);
 
-  if (crag === null) {
-    throw new ValidationError('Cant find crag with given ID');
+    if (crag === null) {
+      throw new ValidationError('Cant find crag with given ID');
+    }
+    res.status(200).json({
+      ok: true,
+      data: crag,
+      status: 200,
+    });
+
+    timer({ ...metricsLabels, success: 'true' });
+    return crag;
+  } catch (e) {
+    timer({ ...metricsLabels, success: 'false' });
+    throw e;
   }
 
-  res.status(200).json({
-    ok: true,
-    data: crag,
-    status: 200,
-  });
+  // const crag = CragRecord.deleteCrag(req.params.id);
+
+  // if (crag === null) {
+  //   throw new ValidationError('Cant find crag with given ID');
+  // }
+
+  // res.status(200).json({
+  //   ok: true,
+  //   data: crag,
+  //   status: 200,
+  // });
 };
