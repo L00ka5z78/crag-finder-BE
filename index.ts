@@ -7,6 +7,10 @@ import { corsInit, limiter, testExpressMetrics } from './config';
 import { authRoute, userRoute } from './routers';
 import { errorHandler } from './common';
 import { startMetricServer } from './utils';
+import swaggerDocs from './utils/swagger';
+import swaggerConfig from 'config';
+
+const port = swaggerConfig.get<number>('PORT');
 
 const app = express();
 app.use(corsInit);
@@ -30,4 +34,5 @@ app.listen(3001, '0.0.0.0', () => {
     `Server is ON and running on http://${config.server.HOST}:${config.server.PORT}`
   );
   startMetricServer(); // run metrics server
+  swaggerDocs(app, port); //run swagger docs
 });
