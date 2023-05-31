@@ -65,13 +65,19 @@ Folder structure
 
 ![directories-structure](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/079f9dbf-4e31-4f03-b58b-42289458ea60)
 
-Database general layout
+
+### Database general layout
 
 ![db-example-crags](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/f8ccb4d3-13c2-49dc-a0b8-533287fba4e9)
+
+
 ![db-table](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/6b67f0b6-4fe8-417e-b49d-2b6de4704d56)
+
 ![db-table-crags](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/cd16cf52-7d09-4e3e-ab98-4f8d28f2de90)
+
 ![db-example](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/4c3bea0b-7e34-449c-b5d1-97a26950e170)
 
-Example of express metrics
+
+### Example of express metrics
 
 ![expresmetrics_prometheus](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/2a339c2f-5f26-4728-a507-68dd98c165ae)
