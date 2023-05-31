@@ -32,7 +32,7 @@ user is redirected to other endpoint. (will be removed soon)
 
 Im not frontend dude, so it will take some time for sure, but backend is actually done. There might be some issues,
 but I didnt found anything right now. I started with create some Swagger documentation on separate branch, but 
-I guess it will be added as a last thing when the fronteng is ready in  most of cases.
+I guess it will be added as a last thing when the frontend is ready in  most of cases.
 
 
 ## Tech stack used in backend:
