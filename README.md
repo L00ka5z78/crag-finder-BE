@@ -34,6 +34,8 @@ Im not frontend dude, so it will take some time for sure, but backend is actuall
 but I didnt found anything right now. I started with create some Swagger documentation on separate branch, but 
 I guess it will be added as a last thing when the frontend is ready in  most of cases.
 
+#### Main features are on the develop branch not on the main. 
+
 
 ## Tech stack used in backend:
 
@@ -63,25 +65,27 @@ https://github.com/L00ka5z78/crag-finder-FE
 ### Some screens.
 Folder structure
 
-![directories-structure](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/079f9dbf-4e31-4f03-b58b-42289458ea60)
+![directories-structure](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/d5388e08-4e4f-4ae8-a862-fd27c30d05b4)
 
 
 ### Database general layout
 
-![db-example-crags](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/f8ccb4d3-13c2-49dc-a0b8-533287fba4e9)
+![db-example-crags](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/f748a7e4-75f4-4106-901d-ef2a4ed8f5f6)
+
 
 *************************************************************
-![db-table](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/6b67f0b6-4fe8-417e-b49d-2b6de4704d56)
+![db-table](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/4b05caf7-03ba-4487-8024-f79e6ae59f7c)
+
+
+*************************************************************
+![db-table-crags](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/7f911524-6c5c-4f6f-8092-82aa4a1a4fcd)
+
 
 *************************************************************
 
-![db-table-crags](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/cd16cf52-7d09-4e3e-ab98-4f8d28f2de90)
-
-*************************************************************
-
-![db-example](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/4c3bea0b-7e34-449c-b5d1-97a26950e170)
+![db-example](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/b6943d23-22f4-4d26-bb11-0bd2983a7caa)
 
 
 ### Example of express metrics
 
-![expresmetrics_prometheus](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/2a339c2f-5f26-4728-a507-68dd98c165ae)
+![expresmetrics_prometheus](https://github.com/L00ka5z78/crag-finder-BE/assets/110019733/1920d0f8-714c-4ebd-bf59-a285a2b6d09d)
